@@ -1,0 +1,14 @@
+{
+  "repositories": {
+    ".github": {
+      "order": 90,
+      "role": "Public organization overview and automatically maintained repository catalog.",
+      "status": "Organization profile."
+    },
+    "agentic-governance-drafts": {
+      "order": 10,
+      "role": "Internet-Drafts for portable intent, authority, trust, normative and layer-handoff artifacts.",
+      "status": "Public pre-submission work; open for review and not an adopted standard."
+    }
+  }
+}

@@ -1,0 +1,66 @@
+name: Update repository catalog
+
+on:
+  schedule:
+    - cron: "17 13 * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - profile/catalog.json
+      - scripts/update_repo_catalog.py
+      - .github/workflows/update-repository-catalog.yml
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: update-repository-catalog
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read public organization repositories
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh repo list tamed-autonomy --limit 1000
+          --json name,description,visibility,isArchived,isFork,url
+          > "$RUNNER_TEMP/repositories.json"
+
+      - name: Render catalog
+        run: >-
+          python3 scripts/update_repo_catalog.py
+          --input "$RUNNER_TEMP/repositories.json"
+          --config profile/catalog.json
+          --readme profile/README.md
+          --audience public
+
+      - name: Test generator
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Open or refresh pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- profile/README.md; then
+            echo "Repository catalog is current."
+            exit 0
+          fi
+          branch="automation/update-repository-catalog"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "refs/heads/$branch:refs/remotes/origin/$branch" || true
+          git switch -C "$branch"
+          git add profile/README.md
+          git commit -m "docs: refresh repository catalog"
+          git push --force-with-lease origin "$branch"
+          gh pr view "$branch" --json url >/dev/null 2>&1 ||
+            gh pr create --head "$branch" --base main \
+              --title "docs: refresh repository catalog" \
+              --body "Automated reconciliation of the public organization repository catalog."
