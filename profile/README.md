@@ -15,6 +15,31 @@ the final action completes it—while preserving meaningful human agency.
 This is an evolving research and engineering environment, not a claim that a
 production platform, adopted standard or company structure is complete.
 
+## Normative Layer
+
+The Normative Layer applies organizational constraints at action time. It is
+being developed as three independently owned projects with a one-way dependency
+direction:
+
+```text
+UI -> service -> core
+```
+
+- **Normative Core** is the deterministic Python decision library. It owns
+  constraint evaluation and canonical decision receipts, without depending on
+  web frameworks, product workflows or infrastructure.
+- **Normative Layer Service** is the headless Python service. It resolves
+  operational context, invokes the core, persists results and integrates with
+  authentication, enforcement and oversight systems.
+- **Normative Layer UI** is a framework-neutral set of embeddable governance UI
+  components. It consumes the service API and remains separate so product and
+  frontend teams can choose their own application framework.
+
+These boundaries allow the core to evolve as a reusable library—and potentially
+as an open-source project—without coupling it to a particular service deployment
+or product interface. The three repositories are currently private while their
+interfaces and release model are being established.
+
 ## Public repositories
 
 <!-- REPOSITORY-CATALOG:START -->
