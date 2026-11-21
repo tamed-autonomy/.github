@@ -47,6 +47,8 @@ interfaces and release model are being established.
 |---|---|---|
 | [`agentic-governance-drafts`](https://github.com/tamed-autonomy/agentic-governance-drafts) | Internet-Drafts for portable intent, authority, trust, normative and layer-handoff artifacts. | Public pre-submission work; open for review and not an adopted standard. |
 | [`.github`](https://github.com/tamed-autonomy/.github) | Public organization overview and automatically maintained repository catalog. | Organization profile. |
+| [`kinetic-trust-library`](https://github.com/tamed-autonomy/kinetic-trust-library) | Python reference library for selected KTP v2.1.0 protocol primitives. | Public repository. |
+| [`kinetic-trust-service`](https://github.com/tamed-autonomy/kinetic-trust-service) | Optional synchronous composition helpers for Kinetic Trust Library. | Public repository. |
 <!-- REPOSITORY-CATALOG:END -->
 
 ## Learn more
